@@ -1,0 +1,40 @@
+# Changelog
+
+## Unreleased
+- Completed Sprint 5: UI Release Checklist
+  - Implemented `RuntimeControl` (Pause/Resume button, Status Badge)
+  - Implemented `ChatInterface` (History, Input, Error handling)
+  - Styled application (Modern, clean CSS)
+  - Verified manual UI interaction (Pause rejects messages)
+- Completed Sprint 4: Model Routing v1
+  - Implemented `ModelRouter` with Task Taxonomy (Code, Plan, Data, Chat)
+  - Implemented `OllamaClient` for local-only inference
+  - Implemented Privacy Guardrail (rejects prompts when Paused)
+  - Added Routing decision logging (Decision Memory)
+  - Verified with unit tests and evidence
+- Completed Sprint 3: Onboarding & Assistant Contract
+  - Implemented Onboarding State Machine (Welcome -> Privacy -> Contract)
+  - Implemented `OnboardingManager` in Rust
+  - Added "Assistant Contract" verification and persistence logic
+  - Created React UI for Onboarding Wizard
+  - Verified with unit tests (`test_onboarding_flow`) and evidence
+- Completed Sprint 2: Data & Memory Foundations
+  - Implemented SQLite storage layer (`sophia.db`)
+  - Implemented Versioned Snapshot Store (ACID compliant)
+  - Implemented Decision Memory and Preferences
+  - Implemented JSON Export (`export_all`)
+  - Verified with unit tests and evidence
+- Completed Sprint 1: Core Runtime Skeleton
+  - Implemented Runtime State Machine (Stopped, Starting, Running, Paused, Error)
+  - Implemented JSONL Audit Logging
+  - Implemented Runtime Manager with thread-safe state handling
+  - Added basic runtime loop scaffold
+  - Verified with unit tests and evidence
+- Initialized Tauri/React/TypeScript project scaffold
+- Created `planning/architecture/SPRINT_1_RUNTIME_DESIGN.md`
+- Updated Test Plan for Sprint 1
+- Added `AGENTS.md` operational guidelines
+- Initial repository scaffolding
+- Documentation reorganization under `docs/`
+- Sprint plan and gating artifacts
+- Test evidence templates and hashing script
