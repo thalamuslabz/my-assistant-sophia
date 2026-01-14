@@ -1,0 +1,46 @@
+# Changelog
+
+## [1.0.0] - 2026-01-14
+- **Release:** Sophia Assistant v1.0.0 (Local-Only Desktop App)
+- Completed Sprint 6: Release Readiness
+  - Executed full test suite (`test-evidence/release-candidate/full_suite.txt`)
+  - Built production frontend assets
+  - Packaged source and documentation for release
+  - Finalized Release Checklist and Notes
+- Completed Sprint 5: UI Release Checklist
+  - Implemented `RuntimeControl` (Pause/Resume button, Status Badge)
+  - Implemented `ChatInterface` (History, Input, Error handling)
+  - Styled application (Modern, clean CSS)
+- Completed Sprint 4: Model Routing v1
+  - Implemented `ModelRouter` with Task Taxonomy
+  - Implemented `OllamaClient`
+  - Implemented Privacy Guardrail
+- Completed Sprint 3: Onboarding & Assistant Contract
+- Completed Sprint 2: Data & Memory Foundations
+- Completed Sprint 1: Core Runtime Skeleton
+- Completed Sprint 0: Planning & Scaffolding
+  - Implemented Onboarding State Machine (Welcome -> Privacy -> Contract)
+  - Implemented `OnboardingManager` in Rust
+  - Added "Assistant Contract" verification and persistence logic
+  - Created React UI for Onboarding Wizard
+  - Verified with unit tests (`test_onboarding_flow`) and evidence
+- Completed Sprint 2: Data & Memory Foundations
+  - Implemented SQLite storage layer (`sophia.db`)
+  - Implemented Versioned Snapshot Store (ACID compliant)
+  - Implemented Decision Memory and Preferences
+  - Implemented JSON Export (`export_all`)
+  - Verified with unit tests and evidence
+- Completed Sprint 1: Core Runtime Skeleton
+  - Implemented Runtime State Machine (Stopped, Starting, Running, Paused, Error)
+  - Implemented JSONL Audit Logging
+  - Implemented Runtime Manager with thread-safe state handling
+  - Added basic runtime loop scaffold
+  - Verified with unit tests and evidence
+- Initialized Tauri/React/TypeScript project scaffold
+- Created `planning/architecture/SPRINT_1_RUNTIME_DESIGN.md`
+- Updated Test Plan for Sprint 1
+- Added `AGENTS.md` operational guidelines
+- Initial repository scaffolding
+- Documentation reorganization under `docs/`
+- Sprint plan and gating artifacts
+- Test evidence templates and hashing script
