@@ -4,6 +4,7 @@ import "./App.css";
 import { OnboardingWizard } from "./components/onboarding/Wizard";
 import { RuntimeControl } from "./components/RuntimeControl";
 import { ChatInterface } from "./components/ChatInterface";
+import { Settings } from "./components/Settings";
 
 function App() {
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
@@ -39,7 +40,10 @@ function App() {
       </header>
       
       <main className="app-main">
-        <ChatInterface />
+        <div className="main-panels">
+          <ChatInterface />
+          <Settings />
+        </div>
       </main>
     </div>
   );

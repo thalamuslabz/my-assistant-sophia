@@ -1,6 +1,22 @@
-# Desktop App v1 — Deep Operational Assistant
+# Sophia Assistant v1.1 — BYOK (Bring Your Own Key)
 
-Local-only, desktop-first assistant with explicit trust guardrails.
+Local-first desktop assistant with cloud AI integration and explicit trust guardrails.
+
+## Current Release: v1.1.0 (January 15, 2026)
+
+**New in v1.1:**
+- ✅ Gemini API integration (gemini-2.5-flash-lite)
+- ✅ Multi-provider architecture (Gemini, OpenAI, Anthropic, DeepSeek, OpenRouter, Ollama)
+- ✅ Secure API key management
+- ✅ Provider switching via Settings panel
+
+**Quick Start:**
+1. `npm install`
+2. `npm run tauri dev`
+3. Complete onboarding with your Gemini API key
+4. Start chatting!
+
+See `RELEASE_NOTES_v1.1.0.md` for full details.
 
 ## Repo Layout
 - `docs/` — source product and release documentation

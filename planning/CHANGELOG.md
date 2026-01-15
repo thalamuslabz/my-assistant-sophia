@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.1.0] - 2026-01-15
+- **Release:** Sophia Assistant v1.1.0 (BYOK - Bring Your Own Key)
+- **Gate 5 Approved:** Implementation Complete
+  - Gemini API integration working (gemini-2.5-flash-lite)
+  - Provider registry with Gemini-first priority
+  - Settings UI for provider management
+  - API key storage via SecretStore
+- **Sprint 7:** Secure Storage & Provider Registry
+  - Implemented `SecretStore` (in-memory for v1.1, persistent storage planned for v1.2)
+  - Implemented `ProviderRegistry` with Gemini-first fallback strategy
+  - Implemented provider clients: Gemini (tested), OpenAI, Anthropic, DeepSeek, OpenRouter, Ollama
+  - Added provider configuration persistence
+- **Sprint 8:** Gemini-First Implementation
+  - Modified onboarding wizard to collect Gemini API key
+  - Implemented `GeminiClient` with ureq HTTP client
+  - Added network egress consent during onboarding
+  - Fixed Tauri 2.x camelCase/snake_case parameter conversion
+- **Known Issues:**
+  - SecretStore uses in-memory storage (keys don't persist across restarts)
+  - Workaround: Re-enter API keys after restart
+  - Fix planned for v1.2: Encrypted file storage or keyring fix
+
 ## [1.0.0] - 2026-01-14
 - **Release:** Sophia Assistant v1.0.0 (Local-Only Desktop App)
 - Completed Sprint 6: Release Readiness

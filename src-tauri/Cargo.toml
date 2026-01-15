@@ -15,19 +15,21 @@ name = "app_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2.5.3" }
+tauri-build = { version = "2.5.3", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
-tauri = { version = "2.9.5" }
+tauri = { version = "2.9.5", features = [] }
 tauri-plugin-log = "2"
 chrono = { version = "0.4.43", features = ["serde"] }
 rusqlite = { version = "0.38.0", features = ["bundled"] }
 uuid = { version = "1.19.0", features = ["v4", "serde"] }
 reqwest = { version = "0.13.1", features = ["json", "blocking"] }
 tokio = { version = "1.49.0", features = ["full"] }
+keyring = "3.6.3"
+ureq = { version = "2.10", features = ["json"] }
 
 [dev-dependencies]
 tempfile = "3.24.0"

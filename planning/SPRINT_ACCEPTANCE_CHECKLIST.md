@@ -1,6 +1,6 @@
 # Sprint Acceptance Checklist
 
-## Planning
+## Planning (v1.1 Sprint 7)
 - [x] Sprint objectives and scope defined
 - [x] Out-of-scope items listed
 - [x] Risks and dependencies captured

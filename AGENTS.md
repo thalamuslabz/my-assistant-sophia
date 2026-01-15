@@ -7,9 +7,9 @@ This file guides agentic coding agents (AI assistants) operating in this reposit
 **Project:** Desktop App v1 — Deep Operational Assistant  
 **Type:** Local-only, desktop-first application with explicit trust guardrails.  
 **Stack (Planned):** Tauri (Rust + Frontend), Local Runtime.  
-**Current Phase:** Sprint 0 — Repo + Process Foundations (Planning & Documentation).
+**Current Phase:** Sprint 7 — Secure Storage & Abstraction (v1.1 BYOK).
 
-**CRITICAL RULE:** No application coding is permitted until the Sprint Plan is approved. See `planning/GATES.md`.
+**CRITICAL RULE:** No application coding is permitted until the Sprint Plan is approved. See `planning/v1.1/GATES_v1.1.md`.
 
 ## 2. Build, Lint, & Test Commands
 
@@ -51,7 +51,7 @@ As the project is currently in the planning phase, typical build commands are no
 
 Agents must strictly adhere to the engineering gates defined in `planning/GATES.md`.
 
-1.  **Read First:** Before generating code, read `planning/SPRINT_PLAN_v1.md` and related docs in `docs/`.
+1.  **Read First:** Before generating code, read `planning/v1.1/SPRINT_PLAN_BYOK.md` and related docs in `docs/`.
 2.  **Update Plans:** If a decision changes, update `planning/DECISIONS.md` and `planning/CHANGELOG.md`.
 3.  **Test Evidence:**
     - All test runs must be recorded in `test-evidence/`.

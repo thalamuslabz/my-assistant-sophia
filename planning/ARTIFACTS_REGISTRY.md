@@ -1,7 +1,9 @@
 # Artifacts Registry
 
 ## Planning
-- `planning/SPRINT_PLAN_v1.md` — detailed sprint plan
+- `planning/v1.1/SPRINT_PLAN_BYOK.md` — detailed sprint plan for v1.1
+- `planning/v1.1/GATES_v1.1.md` — engineering gates for v1.1
+- `planning/SPRINT_PLAN_v1.md` — detailed sprint plan (v1.0 Complete)
 - `planning/SPRINT_PLAN_TEMPLATE.md` — sprint plan template
 - `planning/SPRINT_ACCEPTANCE_CHECKLIST.md` — sprint acceptance checklist
 - `planning/GATES.md` — engineering gates

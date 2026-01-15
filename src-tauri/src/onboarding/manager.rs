@@ -2,7 +2,6 @@ use crate::storage::StorageManager;
 use chrono::Utc;
 use serde_json::json;
 use std::sync::Arc;
-use tauri::AppHandle;
 
 pub struct OnboardingManager {
     storage: Arc<StorageManager>,
@@ -21,10 +20,14 @@ impl OnboardingManager {
         }
     }
 
-    pub fn accept_contract(&self, contract_version: &str, contract_hash: &str) -> Result<(), String> {
-        // 1. Log the acceptance (Audit Log logic would go here, currently strictly separate)
-        
-        // 2. Store contract details
+    pub fn accept_contract(
+        &self,
+        contract_version: &str,
+        contract_hash: &str,
+        gemini_key_id: &str,
+        network_egress_consent: bool,
+    ) -> Result<(), String> {
+        // 1. Store contract details
         self.storage.set_preference("contract_version", json!(contract_version))
             .map_err(|e| e.to_string())?;
             
@@ -34,16 +37,28 @@ impl OnboardingManager {
         self.storage.set_preference("contract_accepted_at", json!(Utc::now().to_rfc3339()))
             .map_err(|e| e.to_string())?;
 
-        // 3. Create Initial Snapshot (v1)
+        // 2. Ensure Gemini key was stored
+        self.storage.set_preference("gemini_key_linked", json!(gemini_key_id))
+            .map_err(|e| e.to_string())?;
+
+        // 3. Network egress consent
+        self.storage.set_preference("network_egress_consent", json!(network_egress_consent))
+            .map_err(|e| e.to_string())?;
+
+        self.storage.set_preference("primary_provider", json!("gemini"))
+            .map_err(|e| e.to_string())?;
+
+        // 4. Create Initial Snapshot (v1)
         let initial_snapshot = json!({
             "status": "initialized",
-            "context": "fresh_install"
+            "context": "fresh_install",
+            "primary_provider": "gemini"
         });
         
         self.storage.save_snapshot(initial_snapshot)
             .map_err(|e| e.to_string())?;
 
-        // 4. Mark complete
+        // 5. Mark complete
         self.storage.set_preference("onboarding_completed", json!(true))
             .map_err(|e| e.to_string())?;
 
@@ -65,7 +80,7 @@ mod tests {
 
         assert_eq!(manager.has_completed_onboarding(), false);
 
-        manager.accept_contract("v1.0", "sha256:1234").unwrap();
+        manager.accept_contract("v1.0", "sha256:1234", "gemini_api_key", true).unwrap();
 
         assert_eq!(manager.has_completed_onboarding(), true);
         

@@ -17,3 +17,6 @@
 | 2026-01-14 | Model Routing | test-evidence/model-routing/results.txt | 6f720e8525798d59f79e41defd950ebff5e1ccd941f9fe859d386526c5d38e6f | N/A | N/A | Pending | Sophia |
 | 2026-01-14 | Action Approval (UI) | test-evidence/action-approval/manual_test_log.md | a762c9b708ea7586513a016215b561eaefc702095e34a23630f43301f28313d0 | N/A | N/A | Pending | Sophia |
 | 2026-01-14 | RC1 Full Suite | test-evidence/release-candidate/full_suite.txt | 97cbf4ac7db0341ce20b841a9c22c9dbcb780148c27dd066c8f5e03f30ce6510 | N/A | N/A | Pending | Sophia |
+| 2026-01-14 | Gemini Onboarding | test-evidence/gemini-onboarding/results.txt | 793b0f336cf8679b3555898df979b0dbda81d41034998b9ed78da59951d9df4c | N/A | N/A | Pending | Sophia |
+| 2026-01-14 | Gemini Onboarding (Manual) | test-evidence/gemini-onboarding/manual_test_log.md | c55916c3dcae67fabf0bb2dde4e720af04d8b98270a3f02f8b9b3505fe06d0e1 | N/A | N/A | Pending | Sophia |
+| 2026-01-14 | BYOK Registry | test-evidence/byok-secret-store/results.txt | 5c58a330652f6fafbeb00f6f4dfba280bb8a6843b176c47ade8bded9674c3922 | N/A | N/A | Pending | Sophia |

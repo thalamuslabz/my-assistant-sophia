@@ -1,31 +1,20 @@
-use crate::router::client::{LLMClient, OllamaClient};
+use crate::providers::{ProviderRegistry, ProviderType};
 use crate::router::types::{ModelConfig, TaskType};
 use crate::storage::StorageManager;
-use std::sync::Arc;
-use serde_json::Value;
+use std::sync::{Arc, Mutex};
 
 pub struct ModelRouter {
     storage: Arc<StorageManager>,
-    // We use dynamic dispatch to swap clients (Mock vs Real)
-    client: Box<dyn LLMClient + Send + Sync>, 
+    provider_registry: Arc<Mutex<ProviderRegistry>>,
 }
 
 impl ModelRouter {
-    pub fn new(storage: Arc<StorageManager>) -> Self {
-        let config = Self::get_config(&storage);
-        let client = Box::new(OllamaClient::new(&config.endpoint));
+    pub fn new(storage: Arc<StorageManager>, provider_registry: Arc<Mutex<ProviderRegistry>>) -> Self {
+        let _config = Self::get_config(&storage);
         
         ModelRouter {
             storage,
-            client,
-        }
-    }
-
-    // Constructor for testing with mock client
-    pub fn new_with_client(storage: Arc<StorageManager>, client: Box<dyn LLMClient + Send + Sync>) -> Self {
-        ModelRouter {
-            storage,
-            client,
+            provider_registry,
         }
     }
 
@@ -51,23 +40,38 @@ impl ModelRouter {
     }
 
     pub fn route_and_execute(&self, input: &str) -> Result<String, String> {
-        let config = Self::get_config(&self.storage);
         let task_type = self.classify_task(input);
 
-        let model = match task_type {
-            TaskType::GeneralChat | TaskType::DataProcessing => &config.fast_model,
-            TaskType::CodeAnalysis | TaskType::Planning => &config.complex_model,
+        // Resolve provider (Gemini-first order, with primary override)
+        let provider = if let Ok(Some(primary)) = self.storage.get_preference("primary_provider") {
+            if let Some(p) = ProviderType::from_str(primary.as_str().unwrap_or("")) {
+                p
+            } else {
+                ProviderType::Ollama
+            }
+        } else {
+            let provider_order = self.provider_registry.lock().unwrap().get_active_provider_order();
+            provider_order.first().cloned().unwrap_or(ProviderType::Ollama)
         };
+        
+        // Get the model from the provider config
+        let registry = self.provider_registry.lock().unwrap();
+        let model = registry.get_provider_config(&provider)
+            .map(|c| c.model.clone())
+            .unwrap_or_else(|| "gemini-1.5-flash".to_string());
+        
+        let client = registry.get_client(&provider);
+        drop(registry); // Release lock before making API call
 
         // Log the routing decision (Audit)
         let _ = self.storage.record_decision(
             None,
             serde_json::json!({"input_length": input.len()}),
-            serde_json::json!({"route": task_type, "model": model}),
+            serde_json::json!({"route": task_type, "model": &model, "provider": &provider}),
             Some("Routing decision".to_string())
         );
 
-        self.client.complete(model, input)
+        client.complete(&model, input)
             .map_err(|e| e.to_string())
     }
 }
@@ -75,7 +79,6 @@ impl ModelRouter {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::router::client::MockClient;
     use tempfile::tempdir;
 
     #[test]
@@ -83,8 +86,8 @@ mod tests {
         let dir = tempdir().unwrap();
         let db_path = dir.path().join("test.db");
         let storage = Arc::new(StorageManager::new_with_path(db_path));
-        let client = Box::new(MockClient { response: "ok".to_string() });
-        let router = ModelRouter::new_with_client(storage, client);
+        let registry = Arc::new(std::sync::Mutex::new(ProviderRegistry::new(Arc::new(crate::secret_store::SecretStore::new("test")))));
+        let router = ModelRouter::new(storage, registry);
 
         assert_eq!(router.classify_task("write a function to add numbers"), TaskType::CodeAnalysis);
         assert_eq!(router.classify_task("create a plan for the project"), TaskType::Planning);
@@ -96,8 +99,8 @@ mod tests {
         let dir = tempdir().unwrap();
         let db_path = dir.path().join("test.db");
         let storage = Arc::new(StorageManager::new_with_path(db_path));
-        let client = Box::new(MockClient { response: "simulated_response".to_string() });
-        let router = ModelRouter::new_with_client(storage.clone(), client);
+        let registry = Arc::new(std::sync::Mutex::new(ProviderRegistry::new(Arc::new(crate::secret_store::SecretStore::new("test")))));
+        let router = ModelRouter::new(storage.clone(), registry);
 
         let _ = router.route_and_execute("write code");
 
