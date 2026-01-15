@@ -201,6 +201,24 @@ fn reset_provider_config(
     Ok(format!("Reset {} to model: {}", provider, default_config.model))
 }
 
+#[tauri::command]
+fn get_usage_stats(
+    storage: State<'_, Arc<StorageManager>>,
+    days: i64,
+) -> Result<Vec<storage::UsageStats>, String> {
+    storage.get_all_usage_stats(days)
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+fn get_total_cost(
+    storage: State<'_, Arc<StorageManager>>,
+    days: i64,
+) -> Result<f64, String> {
+    storage.get_total_cost(days)
+        .map_err(|e| e.to_string())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -257,7 +275,9 @@ pub fn run() {
             update_provider_model,
             submit_prompt,
             test_keychain,
-            reset_provider_config
+            reset_provider_config,
+            get_usage_stats,
+            get_total_cost
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

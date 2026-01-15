@@ -63,16 +63,48 @@ impl ModelRouter {
         let client = registry.get_client(&provider);
         drop(registry); // Release lock before making API call
 
+        // Estimate tokens (before API call)
+        let prompt_tokens = crate::storage::estimate_tokens(input);
+
         // Log the routing decision (Audit)
         let _ = self.storage.record_decision(
             None,
-            serde_json::json!({"input_length": input.len()}),
+            serde_json::json!({"input_length": input.len(), "estimated_tokens": prompt_tokens}),
             serde_json::json!({"route": task_type, "model": &model, "provider": &provider}),
             Some("Routing decision".to_string())
         );
 
-        client.complete(&model, input)
-            .map_err(|e| e.to_string())
+        // Execute API call
+        let response = client.complete(&model, input)
+            .map_err(|e| e.to_string())?;
+
+        // Estimate completion tokens
+        let completion_tokens = crate::storage::estimate_tokens(&response);
+        let total_tokens = prompt_tokens + completion_tokens;
+
+        // Calculate cost
+        let pricing_calc = crate::storage::PricingCalculator::new();
+        let estimated_cost = pricing_calc.calculate_cost(&model, prompt_tokens, completion_tokens);
+
+        // Record usage
+        let usage_record = crate::storage::UsageRecord {
+            id: None,
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            provider: provider.as_str().to_string(),
+            model: model.clone(),
+            prompt_tokens,
+            completion_tokens,
+            total_tokens,
+            estimated_cost_usd: estimated_cost,
+            request_id: None,
+        };
+
+        if let Err(e) = self.storage.record_usage(&usage_record) {
+            log::warn!("Failed to record usage: {}", e);
+            // Don't fail the request if usage tracking fails
+        }
+
+        Ok(response)
     }
 }
 

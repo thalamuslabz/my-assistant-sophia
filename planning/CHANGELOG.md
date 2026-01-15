@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.2.0] - 2026-01-15
+- **Release:** Sophia Assistant v1.2.0 (Persistent & Tracked)
+- **Gate 11 Approved:** Release v1.2
+  - Persistent encrypted API key storage
+  - Usage tracking and cost management
+  - All 6 providers ready for production
+  - 24 unit tests passing
+- **Gate 10:** Usage Tracking & Cost Management
+  - Implemented usage tracking database (SQLite)
+  - Implemented pricing calculator with real provider pricing
+  - Created usage dashboard UI component
+  - Automatic token counting and cost estimation
+  - Per-provider usage statistics
+  - Historical data (24h, 7d, 30d, 90d views)
+- **Gate 9:** Provider Testing & Validation
+  - Migrated all clients to ureq HTTP client (fixed async panics)
+  - Enhanced error handling and logging for all providers
+  - Updated to cost-effective models (gpt-4o-mini, claude-3-5-haiku)
+  - All 6 providers code-complete and ready
+- **Gate 8:** Persistent Storage Implementation
+  - Implemented AES-256-GCM encryption for API keys
+  - Created encrypted file backend at ~/.sophia/secrets.enc
+  - Atomic write operations with backup mechanism
+  - File permissions (0600) for security
+  - Master key derivation from machine ID
+  - 9 crypto/storage unit tests passing
+- **Gate 7:** Persistent Storage Architecture
+  - Evaluated storage options (keychain vs encrypted file)
+  - Designed encryption strategy (AES-256-GCM)
+  - Created comprehensive architecture document
+  - Security review completed
+- **Major Fixes:**
+  - ✅ API keys now persist across restarts (v1.1 issue resolved)
+  - ✅ No more async runtime panics (HTTP client fixed)
+  - ✅ Cost visibility (usage dashboard added)
+  - ✅ All providers ready (not just Gemini)
+
 ## [1.1.0] - 2026-01-15
 - **Release:** Sophia Assistant v1.1.0 (BYOK - Bring Your Own Key)
 - **Gate 5 Approved:** Implementation Complete

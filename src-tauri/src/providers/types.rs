@@ -64,7 +64,7 @@ impl ProviderConfig {
             provider: ProviderType::OpenAI,
             api_key_keychain_id: "openai_api_key".to_string(),
             endpoint: "https://api.openai.com/v1".to_string(),
-            model: "gpt-4o".to_string(),
+            model: "gpt-4o-mini".to_string(), // Cost-effective model
             enabled: false,
         }
     }
@@ -74,7 +74,7 @@ impl ProviderConfig {
             provider: ProviderType::Anthropic,
             api_key_keychain_id: "anthropic_api_key".to_string(),
             endpoint: "https://api.anthropic.com/v1".to_string(),
-            model: "claude-3-5-sonnet-20240620".to_string(),
+            model: "claude-3-5-haiku-20241022".to_string(), // Fast, affordable model
             enabled: false,
         }
     }

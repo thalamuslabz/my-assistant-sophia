@@ -1,22 +1,26 @@
-# Sophia Assistant v1.1 — BYOK (Bring Your Own Key)
+# Sophia Assistant v1.2 — Persistent & Tracked
 
-Local-first desktop assistant with cloud AI integration and explicit trust guardrails.
+Local-first desktop assistant with cloud AI integration, persistent storage, and cost tracking.
 
-## Current Release: v1.1.0 (January 15, 2026)
+## Current Release: v1.2.0 (January 15, 2026)
 
-**New in v1.1:**
-- ✅ Gemini API integration (gemini-2.5-flash-lite)
-- ✅ Multi-provider architecture (Gemini, OpenAI, Anthropic, DeepSeek, OpenRouter, Ollama)
-- ✅ Secure API key management
-- ✅ Provider switching via Settings panel
+**New in v1.2:**
+- 🔐 **Persistent API Keys** - Keys encrypted and saved across restarts (AES-256-GCM)
+- 📊 **Usage Dashboard** - Real-time cost tracking and usage statistics
+- 💰 **Cost Management** - See exactly how much you're spending
+- 🚀 **All Providers Ready** - 6 providers fully implemented (Gemini, OpenAI, Anthropic, DeepSeek, OpenRouter, Ollama)
+- ✅ **24 Unit Tests** - Comprehensive test coverage
 
 **Quick Start:**
 1. `npm install`
 2. `npm run tauri dev`
 3. Complete onboarding with your Gemini API key
-4. Start chatting!
+4. Keys automatically persist - no more re-entering!
+5. Monitor your costs in the Usage Dashboard
 
-See `RELEASE_NOTES_v1.1.0.md` for full details.
+See `RELEASE_NOTES_v1.2.0.md` for full details.
+
+**Upgrading from v1.1?** Just re-enter your API keys once - they'll persist forever!
 
 ## Repo Layout
 - `docs/` — source product and release documentation

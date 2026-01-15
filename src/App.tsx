@@ -5,6 +5,7 @@ import { OnboardingWizard } from "./components/onboarding/Wizard";
 import { RuntimeControl } from "./components/RuntimeControl";
 import { ChatInterface } from "./components/ChatInterface";
 import { Settings } from "./components/Settings";
+import { UsageDashboard } from "./components/UsageDashboard";
 
 function App() {
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
@@ -42,7 +43,10 @@ function App() {
       <main className="app-main">
         <div className="main-panels">
           <ChatInterface />
-          <Settings />
+          <div className="sidebar">
+            <Settings />
+            <UsageDashboard />
+          </div>
         </div>
       </main>
     </div>

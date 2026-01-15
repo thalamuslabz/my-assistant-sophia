@@ -97,6 +97,32 @@ impl StorageManager {
             [],
         )?;
 
+        // Initialize usage tracking schema
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS usage_records (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                provider TEXT NOT NULL,
+                model TEXT NOT NULL,
+                prompt_tokens INTEGER NOT NULL,
+                completion_tokens INTEGER NOT NULL,
+                total_tokens INTEGER NOT NULL,
+                estimated_cost_usd REAL NOT NULL,
+                request_id TEXT
+            )",
+            [],
+        )?;
+
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_usage_timestamp ON usage_records(timestamp)",
+            [],
+        )?;
+
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_usage_provider ON usage_records(provider)",
+            [],
+        )?;
+
         Ok(())
     }
 
@@ -257,6 +283,45 @@ impl StorageManager {
             decisions,
             preferences: Value::Object(preferences),
         })
+    }
+
+    // Usage tracking methods
+    pub fn record_usage(&self, record: &crate::storage::usage::UsageRecord) -> Result<i64> {
+        let conn = self.get_connection()?;
+        conn.execute(
+            "INSERT INTO usage_records 
+             (timestamp, provider, model, prompt_tokens, completion_tokens, total_tokens, estimated_cost_usd, request_id)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+            params![
+                record.timestamp,
+                record.provider,
+                record.model,
+                record.prompt_tokens,
+                record.completion_tokens,
+                record.total_tokens,
+                record.estimated_cost_usd,
+                record.request_id,
+            ],
+        )?;
+        Ok(conn.last_insert_rowid())
+    }
+
+    pub fn get_usage_stats(&self, provider: &str, days: i64) -> Result<crate::storage::usage::UsageStats> {
+        let conn = self.get_connection()?;
+        let tracker = crate::storage::usage::UsageTracker::new(conn)?;
+        tracker.get_stats_by_provider(provider, days)
+    }
+
+    pub fn get_all_usage_stats(&self, days: i64) -> Result<Vec<crate::storage::usage::UsageStats>> {
+        let conn = self.get_connection()?;
+        let tracker = crate::storage::usage::UsageTracker::new(conn)?;
+        tracker.get_all_stats(days)
+    }
+
+    pub fn get_total_cost(&self, days: i64) -> Result<f64> {
+        let conn = self.get_connection()?;
+        let tracker = crate::storage::usage::UsageTracker::new(conn)?;
+        tracker.get_total_cost(days)
     }
 }
 
